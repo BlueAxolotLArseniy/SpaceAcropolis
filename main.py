@@ -10,7 +10,7 @@ import consts
 pygame.init()
 
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_HEIGHT))
-pygame.display.set_caption("Базовое окно Pygame")
+pygame.display.set_caption("Space Acropolis")
 
 clock = pygame.time.Clock()
 
