@@ -7,12 +7,12 @@ class Asteroid(pygame.sprite.Sprite):
     def __init__(self, screen_width):
         super().__init__()
         
-        self.original_image = pygame.image.load('asteroid.png').convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (self.original_image.get_width() * 5, self.original_image.get_height() * 5))  # Увеличиваем
+        self.original_image = pygame.image.load('textures/asteroid.png').convert_alpha()
+        self.original_image = pygame.transform.scale(self.original_image, (self.original_image.get_width() * 4, self.original_image.get_height() * 4))  # Увеличиваем
         self.rect = self.original_image.get_rect(center=(random.randint(0, screen_width), 10))  # Случайное появление сверху
         
         
-        self.speed = 2 # Скорость падения астероида
+        self.speed = 3 # Скорость падения астероида
         self.rotation_angle = 0
         self.rotation_speed = random.randint(-5, 5)  # Случайная скорость вращения (в градусах)
     

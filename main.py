@@ -40,7 +40,7 @@ while running:
     for asteroid in asteroid_group:
         asteroid.draw(screen)
     
-    player.update()
+    player.update(WIDTH, HEIGHT)
     player.draw(screen)
     
     pygame.display.flip()
