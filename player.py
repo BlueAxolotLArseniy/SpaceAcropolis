@@ -59,4 +59,4 @@ class Player(pygame.sprite.Sprite):
     def draw(self, sc):
         sc.blit(self.image, self.rect)
         for bullet in self.bullet_group: bullet.draw(sc)
-        pygame.draw.rect(sc, (255, 255, 255), (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 1)
+        # pygame.draw.rect(sc, (255, 255, 255), (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 1)
