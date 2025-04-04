@@ -1,4 +1,6 @@
 import pygame
+from bullet import Bullet
+
 pygame.init()
 
 class Player(pygame.sprite.Sprite):
@@ -11,10 +13,13 @@ class Player(pygame.sprite.Sprite):
         
         self.speed_x = 0
         self.speed_y = 0
-        self.acceleration = 5  # Ускорение
-        self.friction = 0.7  # Трение (потеря скорости за тик)
+        self.acceleration = 5  
+        self.friction = 0.7  
+        
+        self.bullet_group = pygame.sprite.Group()
+        self.last_shot_time = 0  # Время последнего выстрела
     
-    def update(self, screen_width: int, screen_height: int):
+    def update(self, screen_width: int, screen_height: int, sc: pygame.Surface):
         keys = pygame.key.get_pressed()
         
         # Горизонтальное движение
@@ -29,6 +34,19 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s] and self.rect.bottomleft[1] < screen_height:
             self.speed_y += self.acceleration
             
+        # Стрельба с задержкой в 500 мс
+        current_time = pygame.time.get_ticks()
+        if keys[pygame.K_SPACE] and current_time - self.last_shot_time > 200:
+            self.last_shot_time = current_time  # Запоминаем время выстрела
+            bullet = Bullet(self.rect.centerx, self.rect.top)
+            self.bullet_group.add(bullet)
+        
+        self.bullet_group.update()
+        
+        for bullet in self.bullet_group:
+            bullet.draw(sc)
+            
+        # Границы экрана
         if self.rect.topleft[0] < 0:
             self.rect.centerx += 0 - self.rect.topleft[0]
         if self.rect.topright[0] > screen_width:
@@ -39,11 +57,9 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottomleft[1] > screen_height:
             self.rect.centery -= self.rect.bottomleft[1] - screen_height
         
-        # Применение трения для плавного замедления
+        # Применение трения
         self.speed_x *= self.friction
         self.speed_y *= self.friction
-        
-        # Добавление гравитации (для замедления вверх)
         
         # Остановка при малой скорости
         if abs(self.speed_x) < 0.1:
@@ -52,10 +68,8 @@ class Player(pygame.sprite.Sprite):
             self.speed_y = 0
         
         # Обновляем позицию
-        if not self.rect.topleft[0] < 0 and not self.rect.topright[0] > screen_width:
-            if not self.rect.topleft[1] < 0 and not self.rect.bottomleft[1] > screen_height:
-                self.rect.centerx += self.speed_x
-                self.rect.centery += self.speed_y
+        self.rect.centerx += self.speed_x
+        self.rect.centery += self.speed_y
     
     def draw(self, sc):
         sc.blit(self.image, self.rect)
