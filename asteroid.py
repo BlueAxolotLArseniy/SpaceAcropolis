@@ -9,7 +9,7 @@ class Asteroid(pygame.sprite.Sprite):
     def __init__(self, screen_width):
         super().__init__()
         
-        self.original_image = pygame.image.load('textures/asteroid.png').convert_alpha()
+        self.original_image = pygame.image.load(f'textures/asteroid{random.randint(1, 4)}.png').convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (self.original_image.get_width() * 4, self.original_image.get_height() * 4))  # Увеличиваем
         self.rect = self.original_image.get_rect(center=(random.randint(0, screen_width), 10))  # Случайное появление сверху
         

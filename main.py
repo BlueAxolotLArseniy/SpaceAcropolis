@@ -34,7 +34,7 @@ while running:
 
     for bullet, asteroids in collisions.items():
         for asteroid in asteroids:
-            print("💥 Уничтожен астероид!")
+            print("Уничтожен астероид!")
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT: running = False
@@ -49,7 +49,7 @@ while running:
     player.draw(screen)
     
     if pygame.sprite.spritecollide(player, asteroid_group, False):
-        print("💀 Игрок погиб! Столкновение с астероидом.")
+        print("Игрок погиб! Столкновение с астероидом.")
         pygame.quit()
         sus.exit()
     
