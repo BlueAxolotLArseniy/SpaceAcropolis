@@ -12,23 +12,28 @@ pygame.init()
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_HEIGHT))
 pygame.display.set_caption("Space Acropolis")
 
+f1 = pygame.font.Font(None, 50)
+
 clock = pygame.time.Clock()
 
 player = Player((consts.SCREEN_WIDTH//2, consts.SCREEN_HEIGHT-100))
 
 asteroid_group = pygame.sprite.Group()
 
-# Таймер для появления новых астероидов
 last_spawn_time = 0
 
 running = True
 while running:
+    
+    text1 = f1.render(str(player.bullets_quantity), True,
+                  (255, 255, 255))
+    
     screen.fill((0, 0, 0))
     
     current_time = time.time()
     if current_time - last_spawn_time >= consts.SPAWN_ASTEROIDS_INTERVAL:
-        asteroid_group.add(Asteroid(consts.SCREEN_WIDTH))  # Добавляем нового астероида
-        last_spawn_time = current_time  # Обновляем время последнего появления астероида
+        asteroid_group.add(Asteroid(consts.SCREEN_WIDTH))
+        last_spawn_time = current_time
 
     collisions = pygame.sprite.groupcollide(player.bullet_group, asteroid_group, True, True)
 
@@ -39,10 +44,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: running = False
 
-    # Обновление астероидов
     asteroid_group.update()
 
-    # Рисуем астероиды
     for asteroid in asteroid_group: asteroid.draw(screen)
     
     player.update(consts.SCREEN_WIDTH, consts.SCREEN_HEIGHT, screen)
@@ -53,7 +56,9 @@ while running:
         pygame.quit()
         sus.exit()
     
+    screen.blit(text1, (10, 10))
+    
     pygame.display.flip()
-    clock.tick(60)  # Ограничиваем до 60 FPS
+    clock.tick(60)  # Ограничение до 60 FPS
     
 pygame.quit()

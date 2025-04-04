@@ -7,4 +7,4 @@ ASTEROID_FALLING_SPEED = 3
 PLAYER_ACCELERATION = 5
 PLAYER_FRICTION = .7
 
-DELAYED_FIRING = 200
+DELAYED_FIRING = 200  # Интервал между стрельбой игрока (в милисекундах)

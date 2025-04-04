@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         
         self.bullet_group = pygame.sprite.Group()
         self.last_shot_time = 0  # Время последнего выстрела
+        self.bullets_quantity = 10
     
     def update(self, screen_width: int, screen_height: int, sc: pygame.Surface):
         keys = pygame.key.get_pressed()
@@ -31,15 +32,15 @@ class Player(pygame.sprite.Sprite):
 
         current_time = pygame.time.get_ticks()
         if keys[pygame.K_SPACE] and current_time - self.last_shot_time > consts.DELAYED_FIRING:
-            self.last_shot_time = current_time  # Запоминаем время выстрела
+            self.last_shot_time = current_time
             bullet = Bullet(self.rect.centerx, self.rect.top)
             self.bullet_group.add(bullet)
+            self.bullets_quantity -= 1
         
         self.bullet_group.update()
         
         for bullet in self.bullet_group: bullet.draw(sc)
             
-        # Границы экрана
         if self.rect.topleft[0] < 0: self.rect.centerx += 0 - self.rect.topleft[0]
         if self.rect.topright[0] > screen_width: self.rect.centerx -= self.rect.topright[0] - screen_width
             
@@ -54,7 +55,6 @@ class Player(pygame.sprite.Sprite):
         if abs(self.speed_x) < 0.1: self.speed_x = 0
         if abs(self.speed_y) < 0.1: self.speed_y = 0
         
-        # Обновляем позицию
         self.rect.centerx += self.speed_x
         self.rect.centery += self.speed_y
     
