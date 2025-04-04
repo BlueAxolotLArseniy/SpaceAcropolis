@@ -1,5 +1,6 @@
 import time
 import pygame
+import sys as sus
 
 from player import Player
 from asteroid import Asteroid
@@ -46,6 +47,11 @@ while running:
     
     player.update(consts.SCREEN_WIDTH, consts.SCREEN_HEIGHT, screen)
     player.draw(screen)
+    
+    if pygame.sprite.spritecollide(player, asteroid_group, False):
+        print("💀 Игрок погиб! Столкновение с астероидом.")
+        pygame.quit()
+        sus.exit()
     
     pygame.display.flip()
     clock.tick(60)  # Ограничиваем до 60 FPS
