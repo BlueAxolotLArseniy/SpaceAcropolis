@@ -1,6 +1,8 @@
 import pygame
 import random
 
+import consts
+
 pygame.init()
 
 class Asteroid(pygame.sprite.Sprite):
@@ -11,24 +13,22 @@ class Asteroid(pygame.sprite.Sprite):
         self.original_image = pygame.transform.scale(self.original_image, (self.original_image.get_width() * 4, self.original_image.get_height() * 4))  # Увеличиваем
         self.rect = self.original_image.get_rect(center=(random.randint(0, screen_width), 10))  # Случайное появление сверху
         
+        # self.bullet = bullet
         
-        self.speed = 3 # Скорость падения астероида
         self.rotation_angle = 0
         self.rotation_speed = random.randint(-5, 5)  # Случайная скорость вращения (в градусах)
     
     def update(self):
-        # Падение астероида
-        self.rect.centery += self.speed
+        self.rect.centery += consts.ASTEROID_FALLING_SPEED
         
-        # Вращение астероида (увеличиваем угол по мере обновлений)
         self.rotation_angle += self.rotation_speed
         self.image = pygame.transform.rotate(self.original_image, self.rotation_angle)  # Вращаем изображение
         self.rect = self.image.get_rect(center=self.rect.center)  # Перерасчёт позиции rect
         
+        if self.rect.top > pygame.display.get_surface().get_height(): self.kill()
         
-        # Убираем астероид, если он ушел за экран
-        if self.rect.top > pygame.display.get_surface().get_height():
-            self.kill()  # Удаляем астероид из группы, если он вышел за экран
+        # if self.rect.colliderect(self.bullet.rect): self.kill()
     
-    def draw(self, sc):
+    def draw(self, sc): 
         sc.blit(self.image, self.rect)
+        pygame.draw.rect(sc, (0, 255, 0), (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 1)
