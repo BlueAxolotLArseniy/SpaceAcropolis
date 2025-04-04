@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s] and self.rect.bottomleft[1] < screen_height: self.speed_y += consts.PLAYER_ACCELERATION
 
         current_time = pygame.time.get_ticks()
-        if keys[pygame.K_SPACE] and current_time - self.last_shot_time > consts.DELAYED_FIRING:
+        if keys[pygame.K_SPACE] and current_time - self.last_shot_time > consts.DELAYED_FIRING and self.bullets_quantity > 0:
             self.last_shot_time = current_time
             bullet = Bullet(self.rect.centerx, self.rect.top)
             self.bullet_group.add(bullet)
