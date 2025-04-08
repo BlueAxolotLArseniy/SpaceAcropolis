@@ -1,3 +1,4 @@
+
 SCREEN_WIDTH, SCREEN_HEIGHT = 960, 540
 
 SPAWN_ASTEROIDS_INTERVAL = .2  # Интервал между появлениями астероидов (в секундах)

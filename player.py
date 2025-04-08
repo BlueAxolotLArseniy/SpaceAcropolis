@@ -2,13 +2,15 @@ import pygame
 from bullet import Bullet
 import consts
 
+
+
 pygame.init()
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, center: tuple):
         super().__init__()
         
-        self.image = pygame.image.load('textures/player.png').convert_alpha()
+        self.image = pygame.image.load('textures/player2.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))
         self.rect = self.image.get_rect(center=center)
         
@@ -19,16 +21,17 @@ class Player(pygame.sprite.Sprite):
         self.last_shot_time = 0  # Время последнего выстрела
         self.bullets_quantity = 10
     
+    
     def update(self):
         keys = pygame.key.get_pressed()
         
         # Горизонтальное движение
-        if keys[pygame.K_a] and 0 < self.rect.topleft[0]: self.speed_x -= consts.PLAYER_ACCELERATION
-        if keys[pygame.K_d] and self.rect.topright[0] < consts.SCREEN_WIDTH: self.speed_x += consts.PLAYER_ACCELERATION
+        if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and 0 < self.rect.topleft[0]: self.speed_x -= consts.PLAYER_ACCELERATION
+        if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and self.rect.topright[0] < consts.SCREEN_WIDTH: self.speed_x += consts.PLAYER_ACCELERATION
 
         # Вертикальное движение
-        if keys[pygame.K_w] and 0 < self.rect.topleft[1]: self.speed_y -= consts.PLAYER_ACCELERATION
-        if keys[pygame.K_s] and self.rect.bottomleft[1] < consts.SCREEN_HEIGHT: self.speed_y += consts.PLAYER_ACCELERATION
+        if (keys[pygame.K_w] or keys[pygame.K_UP]) and 0 < self.rect.topleft[1]: self.speed_y -= consts.PLAYER_ACCELERATION
+        if (keys[pygame.K_s] or keys[pygame.K_DOWN]) and self.rect.bottomleft[1] < consts.SCREEN_HEIGHT: self.speed_y += consts.PLAYER_ACCELERATION
 
         current_time = pygame.time.get_ticks()
         if keys[pygame.K_SPACE] and current_time - self.last_shot_time > consts.DELAYED_FIRING and self.bullets_quantity > 0:
@@ -36,6 +39,8 @@ class Player(pygame.sprite.Sprite):
             bullet = Bullet(self.rect.centerx, self.rect.top)
             self.bullet_group.add(bullet)
             self.bullets_quantity -= 1
+            pygame.mixer.music.load("sounds/shoot.mp3")
+            pygame.mixer.music.play(loops=0, start=0.0, fade_ms=0)
         
         self.bullet_group.update()
             
